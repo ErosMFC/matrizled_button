@@ -28,39 +28,41 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(button_matriz C CXX ASM)
+project(botao_matrizled C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(button_matriz button_matriz.c )
+add_executable(botao_matrizled botao_matrizled.c )
 
-pico_set_program_name(button_matriz "button_matriz")
-pico_set_program_version(button_matriz "0.1")
+pico_set_program_name(botao_matrizled "botao_matrizled")
+pico_set_program_version(botao_matrizled "0.1")
+
+# Generate PIO header
+pico_generate_pio_header(botao_matrizled ${CMAKE_CURRENT_LIST_DIR}/ws2812b.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(button_matriz 1)
-pico_enable_stdio_usb(button_matriz 1)
+pico_enable_stdio_uart(botao_matrizled 0)
+pico_enable_stdio_usb(botao_matrizled 1)
 
 # Add the standard library to the build
-target_link_libraries(button_matriz
+target_link_libraries(botao_matrizled
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(button_matriz PRIVATE
+target_include_directories(botao_matrizled PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
+        ${PICO_SDK_PATH}/src/common/pico_base/include
 )
 
 # Add any user requested libraries
-target_link_libraries(button_matriz
-         pico_stdlib
-         hardware/gpio.h
-         hardware/irq.h
-         hardware/timer.h
+target_link_libraries(botao_matrizled 
+         hardware_pio
+         hardware_clocks
         
         )
 
-pico_add_extra_outputs(button_matriz)
+pico_add_extra_outputs(botao_matrizled)
 
