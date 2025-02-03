@@ -1,0 +1,51 @@
+/explicação do Funcionamento do Código/
+Este código foi desenvolvido para controlar uma matriz de LEDs (25 LEDs no total) e um LED individual utilizando um Raspberry Pi Pico. Além disso, ele implementa a navegação entre números de 0 a 9 através de dois botões (A e B) e faz o piscar de um LED de forma periódica.
+
+Principais Componentes do Código:
+Controle da Matriz de LEDs:
+
+1- O código utiliza a comunicação com LEDs WS2812B por meio da interface PIO (Programmable Input/Output) do Raspberry Pi Pico. A matriz de LEDs é controlada utilizando um algoritmo que envia sinais GRB (verde, vermelho, azul) para os LEDs.
+A função npWrite() é responsável por enviar os dados de cor para os LEDs, enquanto a função npSetLED() define a cor individual de cada LED.
+Contagem e Exibição de Números:
+
+2- A variável numero_atual armazena o número a ser exibido na matriz de LEDs. Os números de 0 a 9 são definidos em um array (numeros), onde cada número é representado por uma matriz 5x5 que mapeia quais LEDs acender.
+A função exibirNumero() percorre a matriz e acende os LEDs correspondentes ao número escolhido.
+Botões de Navegação:
+
+3- O código utiliza dois botões para aumentar ou diminuir o número exibido: o Botão A (incrementa o número) e o Botão B (decrementa o número).
+A função debounce_button() é usada para evitar múltiplos acionamentos rápidos dos botões, implementando um filtro de "debounce" de 200ms.
+Piscar o LED:
+
+4- O LED conectado no pino LED_R pisca a cada 200ms. Isso é feito na função piscarLED(), que alterna o estado do LED entre ligado e desligado.
+
+Instruções de Execução:
+Preparar o Ambiente de Desenvolvimento:
+
+1- Certifique-se de ter o ambiente de desenvolvimento do Raspberry Pi Pico configurado corretamente. Instale as ferramentas necessárias, como o pico-sdk e o CMake.
+Configurar o CMakeLists.txt:
+
+No arquivo CMakeLists.txt, adicione a linha para gerar o cabeçalho PIO para o controle dos LEDs:
+pico_generate_pio_header(${CMAKE_CURRENT_SOURCE_DIR}/ws2812b.pio)
+
+2-Carregar o Código no Raspberry Pi Pico:
+
+Conecte o Raspberry Pi Pico ao computador e entre no modo de gravação (pressionando o botão BOOTSEL).
+em seguida compile o codigo e faça o upload atraves do botão do terminal "run"
+
+após a compilação, o arquivo .uf2 gerado será copiado para o Raspberry Pi Pico.
+Conectar os LEDs e Botões:
+
+3- Conecte os LEDs WS2812B ao pino LED_PIN (pino 7) e configure os pinos dos botões A (pino 5) e B (pino 6) para entradas com resistência pull-up.
+
+4- Executar o Código:
+
+Após carregar o código no Pico, o sistema deve exibir o número 0 na matriz de LEDs. Ao pressionar o Botão A, o número aumentará de 1 em 1, e ao pressionar o Botão B, o número diminuirá.
+6- Verificação do Piscar do LED:
+
+O LED conectado no pino LED_R piscando a cada 200ms também pode ser observado, indicando que o código está em funcionamento.
+
+Conclusão
+Este código demonstra como controlar uma matriz de LEDs WS2812B, navegar entre números com botões e realizar um piscar simples de um LED no Raspberry Pi Pico. A implementação de "debounce" para os botões assegura que os cliques sejam capturados de forma confiável, sem repetições indesejadas.
+
+
+
